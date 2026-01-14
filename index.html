@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - animishajamburmath</title>
+    <title>Portfolio - Animishan Jamburmath</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -232,7 +232,7 @@
             margin-bottom: 0.5rem;
         }
 
-        .form-group input {
+        .form-group input, .form-group select {
             width: 100%;
             padding: 0.5rem 1rem;
             background: rgba(15, 23, 42, 0.5);
@@ -253,7 +253,7 @@
             resize: vertical;
         }
 
-        .form-group input:focus {
+        .form-group input:focus, .form-group select:focus {
             border-color: #14b8a6;
         }
         
@@ -265,6 +265,25 @@
             font-size: 0.75rem;
             color: #94a3b8;
             margin-top: 0.25rem;
+        }
+
+        .upload-guide {
+            background: rgba(20, 184, 166, 0.1);
+            border: 1px solid rgba(20, 184, 166, 0.3);
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .upload-guide a {
+            color: #14b8a6;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .upload-guide a:hover {
+            text-decoration: underline;
         }
 
         .btn-group {
@@ -574,6 +593,30 @@
             font-weight: 600;
             color: #14b8a6;
             text-align: center;
+        }
+
+        .section-divider {
+            margin-bottom: 4rem;
+        }
+
+        .section-heading {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-heading.realworld {
+            color: #14b8a6;
+            border-bottom: 2px solid rgba(20, 184, 166, 0.3);
+        }
+
+        .section-heading.hobby {
+            color: #06b6d4;
+            border-bottom: 2px solid rgba(6, 182, 212, 0.3);
         }
 
         .projects-grid {
@@ -956,6 +999,22 @@
             
             <div id="projectsEditForm" class="edit-form">
                 <h3>Add New Project</h3>
+                
+                <div class="upload-guide">
+                    📸 <strong>How to upload images:</strong><br>
+                    1. Go to <a href="https://imgbb.com" target="_blank">ImgBB.com</a> or <a href="https://imgur.com" target="_blank">Imgur.com</a><br>
+                    2. Upload your image<br>
+                    3. Copy the <strong>Direct Link</strong> URL<br>
+                    4. Paste it below
+                </div>
+
+                <div class="form-group">
+                    <label>Project Type</label>
+                    <select id="projectType">
+                        <option value="realworld">Real World Project</option>
+                        <option value="hobby">Hobby Project</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <label>Project Title</label>
                     <input type="text" id="projectTitle" placeholder="Enter project title">
@@ -966,13 +1025,13 @@
                 </div>
                 <div class="form-group">
                     <label>Main Image URL</label>
-                    <input type="text" id="projectMainImage" placeholder="Paste image URL from your storage">
-                    <div class="form-helper">This will be shown on the project card and at the top of details page</div>
+                    <input type="text" id="projectMainImage" placeholder="https://i.ibb.co/... or https://i.imgur.com/...">
+                    <div class="form-helper">Paste the direct image URL from ImgBB or Imgur</div>
                 </div>
                 <div class="form-group">
                     <label>Additional Demo Images (Optional)</label>
-                    <textarea rows="4" id="projectDemoImages" placeholder="Paste image URLs (one per line)"></textarea>
-                    <div class="form-helper">These images will appear in the project details section as a gallery</div>
+                    <textarea rows="4" id="projectDemoImages" placeholder="https://i.ibb.co/image1.jpg&#10;https://i.imgur.com/image2.png&#10;https://i.ibb.co/image3.jpg"></textarea>
+                    <div class="form-helper">Paste one image URL per line</div>
                 </div>
                 <div class="form-group">
                     <label>Full Project Details</label>
@@ -981,7 +1040,593 @@
                 <button class="add-btn" onclick="addProject()">Add Project</button>
             </div>
 
-            <div id="projectsList" class="projects-grid">
-                <div class="loading">Loading projects...</div>
+            <div class="section-divider">
+                <h2 class="section-heading realworld">
+                    <i class="fas fa-briefcase"></i>Real World Projects
+                </h2>
+                <div id="realworldProjectsList" class="projects-grid">
+                    <div class="loading">Loading real world projects...</div>
+                </div>
             </div>
-        </div
+
+            <div>
+                <h2 class="section-heading hobby">
+                    <i class="fas fa-lightbulb"></i>Hobby Projects
+                </h2>
+                <div id="hobbyProjectsList" class="projects-grid">
+                    <div class="loading">Loading hobby projects...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="projectDetail" class="page page-container">
+        <div class="page-content">
+            <button class="back-btn" onclick="navigateTo('projects')">← Back to Projects</button>
+            <div id="projectDetailContent"></div>
+        </div>
+    </div>
+
+    <div id="about" class="page page-container">
+        <div class="page-content">
+            <button class="back-btn" onclick="navigateTo('home')">← Back to Home</button>
+            <h1>About Me</h1>
+            
+            <div id="aboutEditForm" class="edit-form">
+                <h3>Edit About Section</h3>
+                <div class="form-group">
+                    <textarea rows="8" id="aboutText" placeholder="Write about yourself..."></textarea>
+                </div>
+                <button class="add-btn" onclick="updateAbout()">Update About</button>
+            </div>
+
+            <div id="aboutContent" class="about-content">
+                <div class="loading">Loading about...</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <h2>Admin Login</h2>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter password">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="handleLogin()">Login</button>
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="imageModal" class="image-modal">
+        <img id="modalImage" src="" alt="Full size image">
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, doc, setDoc, deleteDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC8yRQcP38u2FVMUSBYPajhdL-zjnpP7BQ",
+            authDomain: "animishajamburmathportfolio.firebaseapp.com",
+            projectId: "animishajamburmathportfolio",
+            storageBucket: "animishajamburmathportfolio.firebasestorage.app",
+            messagingSenderId: "738630562080",
+            appId: "1:738630562080:web:610878c59bfb5d88dda745",
+            measurementId: "G-RV60JE3HZ3"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.db = db;
+        window.firestoreFunctions = { collection, getDocs, doc, setDoc, deleteDoc };
+        window.dispatchEvent(new Event('firebaseReady'));
+    </script>
+
+    <script>
+        var homeBackground = document.querySelector('#home .background-animation');
+        var colors = ['#5eead4', '#06b6d4', '#a78bfa', '#f472b6', '#60a5fa', '#6ee7b7', '#fb923c', '#fbbf24'];
+        
+        for (var i = 0; i < 25; i++) {
+            var particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            particle.style.animationDuration = (5 + Math.random() * 10) + 's';
+            homeBackground.appendChild(particle);
+        }
+
+        var isLoggedIn = false;
+        var skills = [];
+        var projects = [];
+        var currentProjectId = null;
+        var aboutText = '';
+        var editingSkillIndex = null;
+        var editingProjectId = null;
+
+        window.addEventListener('firebaseReady', function() {
+            loadData();
+        });
+
+        async function loadData() {
+            try {
+                var db = window.db;
+                var firestoreFunctions = window.firestoreFunctions;
+
+                var skillsSnapshot = await firestoreFunctions.getDocs(firestoreFunctions.collection(db, 'skills'));
+                skills = [];
+                skillsSnapshot.forEach(function(doc) {
+                    skills.push(doc.data());
+                });
+
+                var projectsSnapshot = await firestoreFunctions.getDocs(firestoreFunctions.collection(db, 'projects'));
+                projects = [];
+                projectsSnapshot.forEach(function(doc) {
+                    projects.push(doc.data());
+                });
+
+                var aboutSnapshot = await firestoreFunctions.getDocs(firestoreFunctions.collection(db, 'about'));
+                aboutSnapshot.forEach(function(doc) {
+                    aboutText = doc.data().content || '';
+                });
+
+                renderSkills();
+                renderProjects();
+                renderAbout();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                renderSkills();
+                renderProjects();
+                renderAbout();
+            }
+        }
+
+        async function saveSkills() {
+            try {
+                var db = window.db;
+                var firestoreFunctions = window.firestoreFunctions;
+                
+                for (var i = 0; i < skills.length; i++) {
+                    var skill = skills[i];
+                    await firestoreFunctions.setDoc(firestoreFunctions.doc(db, 'skills', 'skill_' + i), skill);
+                }
+            } catch (error) {
+                console.error('Error saving skills:', error);
+            }
+        }
+
+        async function saveProjects() {
+            try {
+                var db = window.db;
+                var firestoreFunctions = window.firestoreFunctions;
+                
+                for (var i = 0; i < projects.length; i++) {
+                    var project = projects[i];
+                    await firestoreFunctions.setDoc(firestoreFunctions.doc(db, 'projects', 'project_' + project.id), project);
+                }
+            } catch (error) {
+                console.error('Error saving projects:', error);
+            }
+        }
+
+        async function deleteProjectFromFirestore(id) {
+            try {
+                var db = window.db;
+                var firestoreFunctions = window.firestoreFunctions;
+                await firestoreFunctions.deleteDoc(firestoreFunctions.doc(db, 'projects', 'project_' + id));
+            } catch (error) {
+                console.error('Error deleting project:', error);
+            }
+        }
+
+        async function saveAbout() {
+            try {
+                var db = window.db;
+                var firestoreFunctions = window.firestoreFunctions;
+                await firestoreFunctions.setDoc(firestoreFunctions.doc(db, 'about', 'content'), { content: aboutText });
+            } catch (error) {
+                console.error('Error saving about:', error);
+            }
+        }
+
+        function navigateTo(pageId) {
+            var pages = document.querySelectorAll('.page');
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('active');
+            }
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        var loginBtn = document.getElementById('loginBtn');
+        var loginModal = document.getElementById('loginModal');
+
+        loginBtn.addEventListener('click', function() {
+            if (isLoggedIn) {
+                handleLogout();
+            } else {
+                loginModal.classList.add('active');
+            }
+        });
+
+        function closeModal() {
+            loginModal.classList.remove('active');
+        }
+
+        function handleLogin() {
+            var username = document.getElementById('username').value;
+            var password = document.getElementById('password').value;
+
+            if (username === 'animisha' && password === '#Apj123456789') {
+                isLoggedIn = true;
+                loginBtn.textContent = 'Logout';
+                loginBtn.classList.add('logout-btn');
+                
+                document.getElementById('skillsEditForm').classList.add('active');
+                document.getElementById('projectsEditForm').classList.add('active');
+                document.getElementById('aboutEditForm').classList.add('active');
+                document.body.classList.add('logged-in');
+                
+                closeModal();
+                renderProjects();
+                renderSkills();
+                renderAbout();
+                alert('Login successful! You can now edit content.');
+            } else {
+                alert('Invalid username or password');
+            }
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            loginBtn.textContent = 'Login';
+            loginBtn.classList.remove('logout-btn');
+            
+            document.getElementById('skillsEditForm').classList.remove('active');
+            document.getElementById('projectsEditForm').classList.remove('active');
+            document.getElementById('aboutEditForm').classList.remove('active');
+            document.body.classList.remove('logged-in');
+            
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            renderProjects();
+            renderSkills();
+            renderAbout();
+        }
+
+        loginModal.addEventListener('click', function(e) {
+            if (e.target === loginModal) {
+                closeModal();
+            }
+        });
+
+        function addSkill() {
+            var name = document.getElementById('skillName').value;
+            var percent = document.getElementById('skillPercent').value;
+            
+            if (name && percent && percent >= 0 && percent <= 100) {
+                if (editingSkillIndex !== null) {
+                    skills[editingSkillIndex] = { name: name, percent: parseInt(percent) };
+                    editingSkillIndex = null;
+                    document.querySelector('#skillsEditForm .add-btn').textContent = 'Add Skill';
+                    alert('Skill updated successfully!');
+                } else {
+                    skills.push({ name: name, percent: parseInt(percent) });
+                    alert('Skill added successfully!');
+                }
+                
+                document.getElementById('skillName').value = '';
+                document.getElementById('skillPercent').value = '';
+                saveSkills();
+                renderSkills();
+            } else {
+                alert('Please fill in all fields with valid values (0-100)');
+            }
+        }
+
+        function editSkill(index) {
+            editingSkillIndex = index;
+            var skill = skills[index];
+            document.getElementById('skillName').value = skill.name;
+            document.getElementById('skillPercent').value = skill.percent;
+            document.querySelector('#skillsEditForm .add-btn').textContent = 'Update Skill';
+            document.getElementById('skillsEditForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function deleteSkill(index) {
+            if (confirm('Are you sure you want to delete this skill?')) {
+                skills.splice(index, 1);
+                saveSkills();
+                renderSkills();
+                alert('Skill deleted successfully!');
+            }
+        }
+
+        function renderSkills() {
+            var container = document.getElementById('skillsList');
+            container.innerHTML = '';
+            
+            if (skills.length === 0) {
+                container.innerHTML = '<p style="font-size: 1.25rem; color: #d1d5db; grid-column: 1/-1; text-align: center;">No skills added yet. Login and add your skills!</p>';
+                return;
+            }
+            
+            for (var i = 0; i < skills.length; i++) {
+                var skill = skills[i];
+                var radius = 58;
+                var circumference = 2 * Math.PI * radius;
+                var offset = circumference - (skill.percent / 100) * circumference;
+                
+                var actionsHtml = '';
+                if (isLoggedIn) {
+                    actionsHtml = '<div class="skill-actions">' +
+                        '<button class="action-btn edit-project-btn" onclick="editSkill(' + i + ')" title="Edit Skill">' +
+                            '<i class="fas fa-edit"></i>' +
+                        '</button>' +
+                        '<button class="action-btn delete-project-btn" onclick="deleteSkill(' + i + ')" title="Delete Skill">' +
+                            '<i class="fas fa-trash"></i>' +
+                        '</button>' +
+                    '</div>';
+                }
+                
+                var skillDiv = document.createElement('div');
+                skillDiv.className = 'skill-item';
+                skillDiv.innerHTML = 
+                    actionsHtml +
+                    '<div class="skill-circle">' +
+                        '<svg width="150" height="150">' +
+                            '<circle class="skill-circle-bg" cx="75" cy="75" r="' + radius + '"></circle>' +
+                            '<circle class="skill-circle-progress" cx="75" cy="75" r="' + radius + '" ' +
+                                'stroke-dasharray="' + circumference + '" ' +
+                                'stroke-dashoffset="' + offset + '"></circle>' +
+                        '</svg>' +
+                        '<div class="skill-circle-text">' + skill.percent + '%</div>' +
+                    '</div>' +
+                    '<div class="skill-name">' + skill.name + '</div>';
+                container.appendChild(skillDiv);
+            }
+        }
+
+        function addProject() {
+            var type = document.getElementById('projectType').value;
+            var title = document.getElementById('projectTitle').value;
+            var desc = document.getElementById('projectDesc').value;
+            var mainImage = document.getElementById('projectMainImage').value;
+            var demoImagesText = document.getElementById('projectDemoImages').value;
+            var details = document.getElementById('projectDetails').value;
+            
+            var demoImages = demoImagesText.split('\n').filter(function(url) {
+                return url.trim() !== '';
+            }).map(function(url) {
+                return url.trim();
+            });
+            
+            if (title && desc && mainImage) {
+                if (editingProjectId) {
+                    for (var i = 0; i < projects.length; i++) {
+                        if (projects[i].id === editingProjectId) {
+                            projects[i].type = type;
+                            projects[i].title = title;
+                            projects[i].desc = desc;
+                            projects[i].mainImage = mainImage;
+                            projects[i].demoImages = demoImages;
+                            projects[i].details = details || 'No additional details provided.';
+                            break;
+                        }
+                    }
+                    editingProjectId = null;
+                    document.querySelector('#projectsEditForm .add-btn').textContent = 'Add Project';
+                    alert('Project updated successfully!');
+                } else {
+                    projects.push({ 
+                        id: Date.now(),
+                        type: type,
+                        title: title, 
+                        desc: desc, 
+                        mainImage: mainImage,
+                        demoImages: demoImages,
+                        details: details || 'No additional details provided.'
+                    });
+                    alert('Project added successfully!');
+                }
+                
+                document.getElementById('projectType').value = 'realworld';
+                document.getElementById('projectTitle').value = '';
+                document.getElementById('projectDesc').value = '';
+                document.getElementById('projectMainImage').value = '';
+                document.getElementById('projectDemoImages').value = '';
+                document.getElementById('projectDetails').value = '';
+                saveProjects();
+                renderProjects();
+            } else {
+                alert('Please fill in title, description, and main image URL');
+            }
+        }
+
+        function editProject(id, event) {
+            event.stopPropagation();
+            
+            var project = null;
+            for (var i = 0; i < projects.length; i++) {
+                if (projects[i].id === id) {
+                    project = projects[i];
+                    break;
+                }
+            }
+            
+            if (project) {
+                editingProjectId = id;
+                document.getElementById('projectType').value = project.type || 'realworld';
+                document.getElementById('projectTitle').value = project.title;
+                document.getElementById('projectDesc').value = project.desc;
+                document.getElementById('projectMainImage').value = project.mainImage;
+                document.getElementById('projectDemoImages').value = (project.demoImages || []).join('\n');
+                document.getElementById('projectDetails').value = project.details;
+                document.querySelector('#projectsEditForm .add-btn').textContent = 'Update Project';
+                document.getElementById('projectsEditForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function deleteProject(id, event) {
+            event.stopPropagation();
+            
+            if (confirm('Are you sure you want to delete this project?')) {
+                projects = projects.filter(function(project) {
+                    return project.id !== id;
+                });
+                deleteProjectFromFirestore(id);
+                renderProjects();
+                alert('Project deleted successfully!');
+            }
+        }
+
+        function renderProjects() {
+            var realworldContainer = document.getElementById('realworldProjectsList');
+            var hobbyContainer = document.getElementById('hobbyProjectsList');
+            realworldContainer.innerHTML = '';
+            hobbyContainer.innerHTML = '';
+            
+            var realworldProjects = projects.filter(function(p) { return p.type === 'realworld'; });
+            var hobbyProjects = projects.filter(function(p) { return p.type === 'hobby'; });
+            
+            if (realworldProjects.length === 0) {
+                realworldContainer.innerHTML = '<p style="font-size: 1.125rem; color: #d1d5db; grid-column: 1/-1; text-align: center;">No real world projects yet. Login and add your professional projects!</p>';
+            } else {
+                for (var i = 0; i < realworldProjects.length; i++) {
+                    realworldContainer.appendChild(createProjectCard(realworldProjects[i]));
+                }
+            }
+            
+            if (hobbyProjects.length === 0) {
+                hobbyContainer.innerHTML = '<p style="font-size: 1.125rem; color: #d1d5db; grid-column: 1/-1; text-align: center;">No hobby projects yet. Login and add your fun side projects!</p>';
+            } else {
+                for (var i = 0; i < hobbyProjects.length; i++) {
+                    hobbyContainer.appendChild(createProjectCard(hobbyProjects[i]));
+                }
+            }
+        }
+
+        function createProjectCard(project) {
+            var projectDiv = document.createElement('div');
+            projectDiv.className = 'project-card';
+            projectDiv.onclick = (function(id) {
+                return function() {
+                    showProjectDetail(id);
+                };
+            })(project.id);
+            
+            var actionsHtml = '';
+            if (isLoggedIn) {
+                actionsHtml = '<div class="project-actions">' +
+                    '<button class="action-btn edit-project-btn" onclick="editProject(' + project.id + ', event)" title="Edit Project">' +
+                        '<i class="fas fa-edit"></i>' +
+                    '</button>' +
+                    '<button class="action-btn delete-project-btn" onclick="deleteProject(' + project.id + ', event)" title="Delete Project">' +
+                        '<i class="fas fa-trash"></i>' +
+                    '</button>' +
+                '</div>';
+            }
+            
+            projectDiv.innerHTML = 
+                actionsHtml +
+                '<img src="' + project.mainImage + '" alt="' + project.title + '" class="project-image" onerror="this.src=\'https://via.placeholder.com/400x200?text=Image+Not+Found\'">' +
+                '<div class="project-info">' +
+                    '<h3 class="project-title">' + project.title + '</h3>' +
+                    '<p class="project-description">' + project.desc + '</p>' +
+                '</div>';
+            
+            return projectDiv;
+        }
+
+        function showProjectDetail(id) {
+            currentProjectId = id;
+            var project = null;
+            for (var i = 0; i < projects.length; i++) {
+                if (projects[i].id === id) {
+                    project = projects[i];
+                    break;
+                }
+            }
+            
+            if (project) {
+                var content = document.getElementById('projectDetailContent');
+                var demoImagesHtml = '';
+                
+                if (project.demoImages && project.demoImages.length > 0) {
+                    demoImagesHtml = '<h2 class="demo-images-heading">Project Gallery</h2><div class="project-images-grid">';
+                    for (var i = 0; i < project.demoImages.length; i++) {
+                        demoImagesHtml += '<img src="' + project.demoImages[i] + '" alt="Demo ' + (i + 1) + '" class="project-demo-image" onclick="openImageModal(\'' + project.demoImages[i] + '\')" onerror="this.src=\'https://via.placeholder.com/400x200?text=Image+Not+Found\'">';
+                    }
+                    demoImagesHtml += '</div>';
+                }
+                
+                content.innerHTML = 
+                    '<div class="project-detail-content">' +
+                        '<img src="' + project.mainImage + '" alt="' + project.title + '" class="project-detail-image" onclick="openImageModal(\'' + project.mainImage + '\')" onerror="this.src=\'https://via.placeholder.com/800x400?text=Image+Not+Found\'">' +
+                        '<h1 class="project-detail-title">' + project.title + '</h1>' +
+                        '<p class="project-detail-desc">' + project.desc + '</p>' +
+                        '<div class="project-detail-full">' + project.details + '</div>' +
+                        demoImagesHtml +
+                    '</div>';
+                navigateTo('projectDetail');
+            }
+        }
+
+        function openImageModal(imageSrc) {
+            var modal = document.getElementById('imageModal');
+            var modalImg = document.getElementById('modalImage');
+            modalImg.src = imageSrc;
+            modal.classList.add('active');
+        }
+
+        var imageModal = document.getElementById('imageModal');
+        imageModal.addEventListener('click', function() {
+            imageModal.classList.remove('active');
+        });
+
+        function editAbout() {
+            document.getElementById('aboutText').value = aboutText;
+            document.getElementById('aboutEditForm').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateAbout() {
+            var text = document.getElementById('aboutText').value;
+            
+            if (text) {
+                aboutText = text;
+                document.getElementById('aboutText').value = '';
+                saveAbout();
+                renderAbout();
+                alert('About section updated successfully!');
+            } else {
+                alert('Please write something about yourself');
+            }
+        }
+
+        function renderAbout() {
+            var container = document.getElementById('aboutContent');
+            
+            if (!aboutText) {
+                container.innerHTML = '<p style="font-size: 1.25rem; color: #d1d5db;">No about information added yet. Login and add your bio!</p>';
+            } else {
+                var editBtn = '';
+                if (isLoggedIn) {
+                    editBtn = '<button class="action-btn edit-project-btn about-actions" onclick="editAbout()" title="Edit About">' +
+                        '<i class="fas fa-edit"></i>' +
+                    '</button>';
+                }
+                container.innerHTML = editBtn + aboutText;
+            }
+        }
+    </script>
+</body>
+</html>
