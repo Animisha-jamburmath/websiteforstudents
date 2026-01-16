@@ -16,12 +16,92 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             overflow-x: hidden;
+            background: #000;
+        }
+
+        /* Animated Canvas Background */
+        .canvas-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .content-overlay {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #06f9dd;
+            border-radius: 100%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1ms ease;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(11, 236, 209, 0.5);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor.expand {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #14b8a6;
+            pointer-events: none;
+            z-index: 9997;
+            opacity: 0;
+            animation: trailFade 0.5s ease-out forwards;
+        }
+
+        @keyframes trailFade {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* Hide default cursor */
+        body {
+            cursor: none;
+        }
+
+        a, button, input, textarea, select {
+            cursor: none;
         }
 
         .page {
             display: none;
             min-height: 100vh;
-            background: linear-gradient(135deg, #151515 0%, #101a2b 50%, #041010 100%);
+            background: #0a0a0a;
             color: white;
             position: relative;
             overflow: hidden;
@@ -29,6 +109,23 @@
 
         .page.active {
             display: flex;
+        }
+
+        /* Background Images for Each Section */
+        #home {
+            background: #0f0e0e;
+        }
+
+        #skills {
+            background: #000;
+        }
+
+        #projects, #projectDetail {
+            background: #000;
+        }
+
+        #about {
+            background: #000;
         }
 
         .background-animation {
@@ -39,6 +136,7 @@
             bottom: 0;
             pointer-events: none;
             overflow: hidden;
+            background: transparent;
         }
 
         .nebula-orb {
@@ -108,7 +206,7 @@
             width: 0.5rem;
             height: 0.5rem;
             border-radius: 50%;
-            opacity: 0;
+            opacity: 1;
             animation: float linear infinite;
         }
 
@@ -205,11 +303,11 @@
         }
 
         .modal-content {
-            background: #1e293b;
+            background: #1a1a1a;
             padding: 2rem;
             border-radius: 1rem;
             border: 1px solid rgba(20, 184, 166, 0.3);
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             max-width: 28rem;
             width: 90%;
         }
@@ -355,8 +453,27 @@
             height: 20rem;
             border-radius: 50%;
             background: linear-gradient(135deg, #14b8a6, #10b981, #06b6d4);
-            padding: 0.25rem;
-            box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.5);
+            padding: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(20, 184, 166, 0.6);
+            position: relative;
+        }
+
+        .image-container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            padding: 0.5rem;
+            background: linear-gradient(135deg, #14b8a6, #06b6d4, #14b8a6);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: rotate 3s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
         }
 
         .image-inner {
@@ -364,7 +481,8 @@
             height: 100%;
             border-radius: 50%;
             overflow: hidden;
-            background: #1e293b;
+            background: #0a0a0a;
+            border: 3px solid #0a0a0a;
         }
 
         .image-inner img {
@@ -490,7 +608,8 @@
 
         .edit-form {
             display: none;
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             padding: 1.5rem;
             border-radius: 1rem;
             border: 1px solid rgba(20, 184, 166, 0.3);
@@ -535,6 +654,17 @@
             align-items: center;
             gap: 1rem;
             position: relative;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(20, 184, 166, 0.2);
+            transition: all 0.3s;
+        }
+
+        .skill-item:hover {
+            background: rgba(0, 0, 0, 0.7);
+            border-color: rgba(20, 184, 166, 0.5);
+            transform: translateY(-5px);
         }
 
         .skill-actions {
@@ -626,7 +756,8 @@
         }
 
         .project-card {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
             border-radius: 1rem;
             border: 1px solid rgba(20, 184, 166, 0.3);
             overflow: hidden;
@@ -636,9 +767,10 @@
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(20, 184, 166, 0.4);
             border-color: #14b8a6;
+            background: rgba(0, 0, 0, 0.8);
         }
 
         .project-actions {
@@ -714,7 +846,8 @@
         }
 
         .project-detail-content {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 1rem;
             border: 1px solid rgba(20, 184, 166, 0.3);
@@ -812,7 +945,8 @@
         }
 
         .about-content {
-            background: rgba(30, 41, 59, 0.5);
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 1rem;
             border: 1px solid rgba(20, 184, 166, 0.3);
@@ -902,16 +1036,15 @@
     </style>
 </head>
 <body>
-    <div id="home" class="page active">
-        <button id="loginBtn" class="login-btn">Login</button>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
 
-        <div class="background-animation">
-            <div class="nebula-orb orb1"></div>
-            <div class="nebula-orb orb2"></div>
-            <div class="nebula-orb orb3"></div>
-            <div class="nebula-orb orb4"></div>
-            <div class="nebula-orb orb5"></div>
-        </div>
+    <div id="home" class="page active">
+        <canvas class="canvas-bg" id="homeCanvas"></canvas>
+        <div class="content-overlay">
+            <img src="profile.jpg" alt="Profile">
+        <button id="loginBtn" class="login-btn">Login</button>
 
         <div class="home-content">
             <div class="main-section">
@@ -959,9 +1092,12 @@
                 </a>
             </div>
         </div>
+        </div>
     </div>
 
     <div id="skills" class="page page-container">
+        <canvas class="canvas-bg" id="skillsCanvas"></canvas>
+        <div class="content-overlay">
         <div class="page-content">
             <button class="back-btn" onclick="navigateTo('home')">← Back to Home</button>
             <h1>Skills</h1>
@@ -990,9 +1126,13 @@
                 </linearGradient>
             </defs>
         </svg>
+        </div>
+        </div>
     </div>
 
     <div id="projects" class="page page-container">
+        <canvas class="canvas-bg" id="projectsCanvas"></canvas>
+        <div class="content-overlay">
         <div class="page-content">
             <button class="back-btn" onclick="navigateTo('home')">← Back to Home</button>
             <h1>Projects</h1>
@@ -1058,16 +1198,22 @@
                 </div>
             </div>
         </div>
+        </div>
     </div>
 
     <div id="projectDetail" class="page page-container">
+        <canvas class="canvas-bg" id="projectDetailCanvas"></canvas>
+        <div class="content-overlay">
         <div class="page-content">
             <button class="back-btn" onclick="navigateTo('projects')">← Back to Projects</button>
             <div id="projectDetailContent"></div>
         </div>
+        </div>
     </div>
 
     <div id="about" class="page page-container">
+        <canvas class="canvas-bg" id="aboutCanvas"></canvas>
+        <div class="content-overlay">
         <div class="page-content">
             <button class="back-btn" onclick="navigateTo('home')">← Back to Home</button>
             <h1>About Me</h1>
@@ -1083,6 +1229,7 @@
             <div id="aboutContent" class="about-content">
                 <div class="loading">Loading about...</div>
             </div>
+        </div>
         </div>
     </div>
 
@@ -1132,19 +1279,165 @@
     </script>
 
     <script>
-        var homeBackground = document.querySelector('#home .background-animation');
-        var colors = ['#5eead4', '#06b6d4', '#a78bfa', '#f472b6', '#60a5fa', '#6ee7b7', '#fb923c', '#fbbf24'];
-        
-        for (var i = 0; i < 25; i++) {
-            var particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-            particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            particle.style.animationDelay = Math.random() * 5 + 's';
-            particle.style.animationDuration = (5 + Math.random() * 10) + 's';
-            homeBackground.appendChild(particle);
+        // Custom Cursor with Trail Effect
+        var cursor = document.querySelector('.cursor');
+        var cursorFollower = document.querySelector('.cursor-follower');
+        var cursorX = 0;
+        var cursorY = 0;
+        var followerX = 0;
+        var followerY = 0;
+        var trailDelay = 0;
+
+        document.addEventListener('mousemove', function(e) {
+            cursorX = e.clientX;
+            cursorY = e.clientY;
+            
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            
+            // Create trail effect
+            trailDelay++;
+            if (trailDelay % 3 === 0) {
+                createTrail(cursorX, cursorY);
+            }
+        });
+
+        function animateFollower() {
+            var dx = cursorX - followerX;
+            var dy = cursorY - followerY;
+            
+            followerX += dx * 0.1;
+            followerY += dy * 0.1;
+            
+            cursorFollower.style.left = followerX + 'px';
+            cursorFollower.style.top = followerY + 'px';
+            
+            requestAnimationFrame(animateFollower);
         }
+        animateFollower();
+
+        function createTrail(x, y) {
+            var trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            document.body.appendChild(trail);
+            
+            setTimeout(function() {
+                trail.remove();
+            }, 500);
+        }
+
+        // Expand cursor on hover
+        var hoverElements = document.querySelectorAll('a, button, .project-card, .skill-item');
+        hoverElements.forEach(function(el) {
+            el.addEventListener('mouseenter', function() {
+                cursor.classList.add('expand');
+            });
+            el.addEventListener('mouseleave', function() {
+                cursor.classList.remove('expand');
+            });
+        });
+
+        // Hide cursor when it leaves the window
+        document.addEventListener('mouseleave', function() {
+            cursor.style.opacity = '0';
+            cursorFollower.style.opacity = '0';
+        });
+        
+        document.addEventListener('mouseenter', function() {
+            cursor.style.opacity = '1';
+            cursorFollower.style.opacity = '1';
+        });
+
+        // Animated Wave Background
+        function createWaveBackground(canvasId, color1, color2) {
+            var canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            
+            var ctx = canvas.getContext('2d');
+            var width = canvas.width = window.innerWidth;
+            var height = canvas.height = window.innerHeight;
+            
+            var particles = [];
+            var particleCount = 100;
+            var maxDistance = 100;
+            
+            for (var i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                
+                // Create gradient
+                var gradient = ctx.createLinearGradient(0, 0, width, height);
+                gradient.addColorStop(0, color1);
+                gradient.addColorStop(1, color2);
+                
+                particles.forEach(function(p, i) {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    
+                    if (p.x < 0 || p.x > width) p.vx *= -1;
+                    if (p.y < 0 || p.y > height) p.vy *= -1;
+                    
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(20, 184, 166, 0.5)';
+                    ctx.fill();
+                    
+                    // Connect particles
+                    for (var j = i + 1; j < particles.length; j++) {
+                        var p2 = particles[j];
+                        var dx = p.x - p2.x;
+                        var dy = p.y - p2.y;
+                        var distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < maxDistance) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = 'rgba(20, 184, 166, ' + (1 - distance / maxDistance) * 0.3 + ')';
+                            ctx.lineWidth = 1;
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+                
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            window.addEventListener('resize', function() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+        }
+        
+        // Initialize backgrounds for each section
+        setTimeout(function() {
+            createWaveBackground('homeCanvas', 'rgba(20, 184, 166, 0.1)', 'rgba(6, 182, 212, 0.1)');
+            createWaveBackground('skillsCanvas', 'rgba(59, 130, 246, 0.1)', 'rgba(147, 51, 234, 0.1)');
+            createWaveBackground('projectsCanvas', 'rgba(234, 179, 8, 0.1)', 'rgba(249, 115, 22, 0.1)');
+            createWaveBackground('projectDetailCanvas', 'rgba(234, 179, 8, 0.1)', 'rgba(249, 115, 22, 0.1)');
+            createWaveBackground('aboutCanvas', 'rgba(236, 72, 153, 0.1)', 'rgba(168, 85, 247, 0.1)');
+        }, 100);
+
+        // Remove old particle generation code
+        var homeBackground = document.querySelector('#home .background-animation');
+        if (homeBackground) {
+            homeBackground.remove();
+        }
+        
+        var colors = ['#5eead4', '#06b6d4', '#a78bfa', '#f472b6', '#60a5fa', '#6ee7b7', '#fb923c', '#fbbf24'];
 
         var isLoggedIn = false;
         var skills = [];
